@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialItems = [
   { id: 1, description: "Passport", quantity: 2, packed: false },
   { id: 2, description: "Socks", quantity: 12, packed: true },
@@ -11,6 +13,7 @@ export default function App() {
       <Form />
       <PackingList />
       <Stats />
+      <Test />
     </div>
   );
 }
@@ -20,20 +23,38 @@ function Logo() {
 }
 
 function Form() {
+  let [description, setDescription] = useState("");
+  let [quantity, setQuantity] = useState(1);
   function handleSubmit(e) {
     e.preventDefault();
+    if (!description) return;
+
+    const newItem = {
+      description,
+      quantity,
+      packed: false,
+      id: "256652",
+    };
+    console.log(newItem);
+    setDescription("");
+    setQuantity("");
   }
   return (
     <form className="add-form" onSubmit={handleSubmit}>
       <h3>What do you need for your trip?</h3>
-      <select>
+      <select value={quantity} onChange={(e) => setQuantity(+e.target.value)}>
         {Array.from({ length: 20 }, (el, i) => i + 1).map((num) => (
           <option value={num} key={num}>
             {num}
           </option>
         ))}
       </select>
-      <input type="text" placeholder="Item" />
+      <input
+        type="text"
+        placeholder="Item"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
       <button>ADD</button>
     </form>
   );
@@ -56,6 +77,10 @@ function Item({ item }) {
       <button>X</button>
     </li>
   );
+}
+
+function Test() {
+  return <p>codesmann</p>;
 }
 function Stats() {
   return (
