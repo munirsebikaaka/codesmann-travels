@@ -1,22 +1,28 @@
 import { useState } from "react";
 
-const initialItems = [
-  { id: 1, description: "Passport", quantity: 2, packed: false },
-  { id: 12, description: "Socks", quantity: 12, packed: true },
-  { id: 1, description: "Charger", quantity: 1, packed: false },
-];
-
 export default function App() {
   const [items, setItems] = useState([]);
+
   function handleItems(item) {
     setItems((items) => [...items, item]);
   }
-
+  function handleDelItem(id) {
+    setItems((items) => items.filter((item) => item.id !== id));
+  }
+  function hundleToggleItems(id) {
+    setItems(
+      items.map((item) => (item.id === id ? { ...item, packed: true } : item))
+    );
+  }
   return (
     <div className="app">
       <Logo />
       <Form handleNeeds={handleItems} />
-      <PackingList items={items} />
+      <PackingList
+        items={items}
+        onHandleDelItem={handleDelItem}
+        onHundleToggleItems={hundleToggleItems}
+      />
       <Stats />
     </div>
   );
@@ -66,22 +72,32 @@ function Form({ handleNeeds }) {
     </form>
   );
 }
-function PackingList({ items }) {
+function PackingList({ items, onHandleDelItem, onHundleToggleItems }) {
   return (
     <ul className="list">
       {items.map((item) => (
-        <Item item={item} />
+        <Item
+          item={item}
+          inHundleDeletes={onHandleDelItem}
+          onHundleToggleItems={onHundleToggleItems}
+          key={item.id}
+        />
       ))}
     </ul>
   );
 }
-function Item({ item }) {
+function Item({ item, inHundleDeletes, onHundleToggleItems }) {
   return (
     <li>
+      <input
+        type="checkbox"
+        value={item}
+        onChange={() => onHundleToggleItems(item.id)}
+      />
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
-      <button>X</button>
+      <button onClick={() => inHundleDeletes(item.id)}>X</button>
     </li>
   );
 }
