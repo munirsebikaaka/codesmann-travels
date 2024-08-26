@@ -23,7 +23,7 @@ export default function App() {
         onHandleDelItem={handleDelItem}
         onHundleToggleItems={hundleToggleItems}
       />
-      <Stats />
+      <Stats items={items} />
     </div>
   );
 }
@@ -102,10 +102,18 @@ function Item({ item, inHundleDeletes, onHundleToggleItems }) {
   );
 }
 
-function Stats() {
+function Stats({ items }) {
+  const numItems = items.length;
+  const packedItems = items.filter((item) => item.packed).length;
+  const percentage = Math.round((packedItems / numItems) * 100);
   return (
     <footer>
-      <em>you have x items on your list, and you aready packed x</em>
+      <em>
+        {percentage === 100
+          ? "You got every thing! ready to go."
+          : `you have ${numItems} items on your list, and you aready packed${" "}
+        ${packedItems} (${percentage}%)`}
+      </em>
     </footer>
   );
 }
