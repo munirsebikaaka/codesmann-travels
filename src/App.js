@@ -95,13 +95,6 @@ function PackingList({
           />
         ))}
       </ul>
-      <div className="actions">
-        <select>
-          <option value="inputs">Sort by input orders</option>
-          <option value="description">Sort by description</option>
-          <option value="packed">Sort by packed status</option>
-        </select>
-      </div>
       <button onClick={onHundleDelArr}>Clear list</button>
     </div>
   );
